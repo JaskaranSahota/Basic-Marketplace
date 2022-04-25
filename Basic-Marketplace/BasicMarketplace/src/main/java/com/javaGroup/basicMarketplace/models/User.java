@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.Email;
@@ -58,7 +60,7 @@ public class User {
     @OneToOne(mappedBy="user", fetch = FetchType.LAZY)
     private Cart cart;
     
-    @OneToMany(mappedBy="user", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="ratedBy", fetch = FetchType.LAZY)
     private List<Rating> ratings;
     
     public User() {
@@ -145,5 +147,13 @@ public class User {
 		this.ratings = ratings;
 	}
     
+	@PrePersist
+    protected void onCreate(){
+        this.createdAt = new Date();
+    }
+    @PreUpdate
+    protected void onUpdate(){
+        this.updatedAt = new Date();
+    }
     
 }    
