@@ -48,7 +48,7 @@ public class Product {
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="cart_id")
-	private List<Cart> inCarts;
+	private Cart inCart;
 	
 	public Product() {
 	}
@@ -109,12 +109,12 @@ public class Product {
 		this.ratings = ratings;
 	}
 
-	public List<Cart> getInCarts() {
-		return inCarts;
+	public Cart getInCarts() {
+		return inCart;
 	}
 
-	public void setInCarts(List<Cart> inCarts) {
-		this.inCarts = inCarts;
+	public void setInCarts(Cart inCart) {
+		this.inCart = inCart;
 	}
 	
 	
