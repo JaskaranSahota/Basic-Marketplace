@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 import com.javaGroup.basicMarketplace.models.LoginUser;
 import com.javaGroup.basicMarketplace.models.Product;
+import com.javaGroup.basicMarketplace.models.Rating;
 import com.javaGroup.basicMarketplace.models.User;
 import com.javaGroup.basicMarketplace.services.ProductService;
+import com.javaGroup.basicMarketplace.services.RatingService;
 import com.javaGroup.basicMarketplace.services.UserService;
 
 @Controller
@@ -27,6 +29,9 @@ public class HomeController {
 	
 	@Autowired
 	private ProductService productServ;
+	
+	@Autowired
+	private RatingService ratingServ;
 	
 	@GetMapping("/")
 	public String index(Model model) {
@@ -152,6 +157,34 @@ public class HomeController {
 			return "edit.jsp";
 		}
 		productServ.update(updateProduct, result);
+		return "redirect:/dashboard";
+	}
+	
+	@GetMapping("/products/{id}/rating")
+	public String rating(@PathVariable Long id,
+			@ModelAttribute("newRating") Rating newRating,
+			HttpSession session,
+			Model model) {
+		if(session.getAttribute("loggedInUser")!=null) {
+			model.addAttribute("product", productServ.findById(id));
+			return "rating.jsp";
+		}
+		else {
+			return "redirect:/";
+		}
+	}
+	
+	@PostMapping("/products/{id}/rate")
+	public String rate(@PathVariable Long id,
+			@Valid @ModelAttribute("newRating") Rating newRating,
+			BindingResult result,
+			HttpSession session,
+			Model model) {
+		if(result.hasErrors()) {
+			return "rating.jsp";
+		}
+		model.addAttribute("product", productServ.findById(id));
+		ratingServ.create(newRating, result);
 		return "redirect:/dashboard";
 	}
 	
