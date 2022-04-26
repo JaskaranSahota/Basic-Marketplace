@@ -13,6 +13,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
@@ -31,11 +32,11 @@ public class Product {
 	@Size(min=2, max=1000)
 	private String description;
 	
-	@NotEmpty(message="Price is required")
+	@NotNull(message="Price is required")
 	@Min(value=1, message="Must be at least 1")
 	private int price;
 	
-	@NotEmpty(message="Amount in stock is required")
+	@NotNull(message="Amount in stock is required")
 	@Min(value=1, message="Must be at least 1")
 	private int amountInStock;
 	

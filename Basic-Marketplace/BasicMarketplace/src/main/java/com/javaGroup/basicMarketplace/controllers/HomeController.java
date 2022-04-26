@@ -9,10 +9,14 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 
 import com.javaGroup.basicMarketplace.models.LoginUser;
+import com.javaGroup.basicMarketplace.models.Product;
 import com.javaGroup.basicMarketplace.models.User;
+import com.javaGroup.basicMarketplace.services.ProductService;
 import com.javaGroup.basicMarketplace.services.UserService;
 
 @Controller
@@ -20,6 +24,9 @@ public class HomeController {
 	
 	@Autowired
 	private UserService userServ;
+	
+	@Autowired
+	private ProductService productServ;
 	
 	@GetMapping("/")
 	public String index(Model model) {
@@ -71,13 +78,87 @@ public class HomeController {
     }
 	
 	@GetMapping("/dashboard")
-	public String dashboard(HttpSession session) {
+	public String dashboard(HttpSession session,
+			Model model) {
 		if(session.getAttribute("loggedInUser")!=null) {
+			model.addAttribute("products", productServ.allProducts());
 			return "dashboard.jsp";
 		}
 		else {
 			return "redirect:/";
 		}
 	}
+	
+	@GetMapping("/products/new")
+	public String newProduct(HttpSession session,
+			@ModelAttribute("newProduct") Product newProduct,
+			BindingResult result,
+			Model model) {
+		if(session.getAttribute("loggedInUser")!=null) {
+			
+			return "new.jsp";
+		}
+		else {
+			return "redirect:/";
+		}
+	}
+	
+	@PostMapping("/products/create")
+	public String create(HttpSession session,
+			@Valid @ModelAttribute("newProduct") Product newProduct,
+			BindingResult result,
+			Model model) {
+		if(result.hasErrors()) {
+			return "new.jsp";
+		}
+		productServ.create(newProduct, result);
+		return "redirect:/dashboard";
+	}
+	
+	@GetMapping("/products/{id}/details")
+	public String details(@PathVariable Long id,
+			HttpSession session,
+			Model model) {
+		if(session.getAttribute("loggedInUser")!=null) {
+			model.addAttribute("products", productServ.findById(id));
+			return "details.jsp";
+		}
+		else {
+			return "redirect:/";
+		}
+	}
+	
+	@GetMapping("/products/{id}/edit")
+	public String edit(@PathVariable Long id,
+			@ModelAttribute("updateProduct") Product updateProduct,
+			HttpSession session,
+			Model model) {
+		if(session.getAttribute("loggedInUser")!=null) {
+			model.addAttribute("product", productServ.findById(id));
+			return "edit.jsp";
+		}
+		else {
+			return "redirect:/";
+		}
+	}
+	
+	@PutMapping("/products/{id}/update")
+	public String update(@PathVariable Long id,
+			@Valid @ModelAttribute("updateProduct") Product updateProduct,
+			BindingResult result,
+			HttpSession session,
+			Model model) {
+		if(result.hasErrors()) {
+			return "edit.jsp";
+		}
+		productServ.update(updateProduct, result);
+		return "redirect:/dashboard";
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+    	session.invalidate();
+    	return "redirect:/";
+    }
 
 }
