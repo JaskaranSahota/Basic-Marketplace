@@ -23,8 +23,8 @@ public class RatingService {
 		if(result.hasErrors()) {
 			return null;
 		}
-		ratingRepo.save(newRating);
-		return null;
+		
+		return ratingRepo.save(newRating);
 	}
 	
 	public double avgRating(Long id) {
