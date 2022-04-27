@@ -5,8 +5,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
+import com.javaGroup.basicMarketplace.models.Cart;
 import com.javaGroup.basicMarketplace.models.LoginUser;
 import com.javaGroup.basicMarketplace.models.User;
+import com.javaGroup.basicMarketplace.repositories.CartRepository;
 import com.javaGroup.basicMarketplace.repositories.UserRepository;
 
 @Service
@@ -14,6 +16,8 @@ public class UserService {
 	
 	@Autowired
 	private UserRepository userRepo;
+	
+	@Autowired CartRepository cartRepo;
 	
 	public User register(User newUser, BindingResult result) {
 		// Check if email is already used
@@ -31,7 +35,11 @@ public class UserService {
 		// If newUser passes all the above validations then continue to hash password and register
 		String hashed= BCrypt.hashpw(newUser.getPassword(), BCrypt.gensalt());
 		newUser.setPassword(hashed);
+		// Give newUser a new Cart
+		Cart newCart = new Cart();
 		userRepo.save(newUser);
+		newCart.setUser(newUser);
+		cartRepo.save(newCart);
 		return null;
 		
 	}

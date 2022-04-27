@@ -42,6 +42,27 @@
 		</c:forEach>
 		</tbody>	
 	</table>
+	<div>
+		<h2>Here is your shopping cart:</h2>
+		<table>
+			<thead>
+				<tr>
+					<th>Products:</th>
+				</tr>
+			</thead>
+			<tbody>
+				<c:forEach items="${cartProducts}" var="cartProduct">
+					<tr>
+						<td>${cartProduct.productName}</td>
+					</tr>
+				</c:forEach>
+					<tr>
+						<td><a href="">Edit Cart</a></td>
+						<td><a href="">Checkout</a></td>
+					</tr>
+			</tbody>
+		</table>
+	</div>
 	<h3>Want to list an item on the MarketPlace?</h3>
 	<a href="/products/new">Get started here!</a>
 </body>
