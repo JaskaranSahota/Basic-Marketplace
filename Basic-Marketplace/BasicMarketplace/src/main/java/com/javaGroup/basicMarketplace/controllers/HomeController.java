@@ -1,5 +1,6 @@
 package com.javaGroup.basicMarketplace.controllers;
 
+import java.util.ArrayList;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
@@ -96,6 +97,12 @@ public class HomeController {
 			model.addAttribute("products", productServ.allProducts());
 			// Cart userCart = (Cart) session.getAttribute("userCart");
 			// model.addAttribute("cartProducts", userCart.getProductsInCart());
+			ArrayList<Double> ratings = new ArrayList<Double>();
+			for(Product product : productServ.allProducts()) {
+				Double prodRating = ratingServ.avgRating(product.getId());
+				ratings.add(prodRating);
+			}
+			model.addAttribute("ratings", ratings);
 			User user = (User)session.getAttribute("loggedInUser");
 			Long userId = user.getId();
 			Cart userCart = cartServ.getUserCart(userId);

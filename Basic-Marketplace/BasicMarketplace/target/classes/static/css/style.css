@@ -1,0 +1,113 @@
+@charset "ISO-8859-1";
+
+html, body { margin: 0; }
+
+:focus { outline: none; }
+::-webkit-input-placeholder { color: #DEDFDF; }
+::-moz-placeholder { color: #DEDFDF; }
+:-moz-placeholder { color: #DEDFDF; }
+::-ms-input-placeholder { color: #DEDFDF; }
+
+body {
+  background:#202020;
+  color: #fff;
+  font-family: 'Raleway', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1
+{
+    cursor: pointer;
+    display: inline-block;
+    font-size: 32px;
+    font-weight: 970;
+    opacity: .5;
+    margin-bottom: 35px;
+    text-transform: uppercase;
+}
+h3
+{
+    cursor: pointer;
+    display: inline-block;
+    font-size: 25px;
+    font-weight: 700;
+    opacity: .5;
+    margin-bottom: 35px;
+    text-transform: uppercase;
+}
+  label {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 22px;
+    font-weight: 600;
+    opacity: .5;
+    margin-top: 15px;
+    text-transform: uppercase;
+  }
+  label:hover {
+    transition: all .3s cubic-bezier(.6,0,.4,1);
+    opacity: 1;
+  }
+  h1:hover{
+    transition: all .3s cubic-bezier(.6,0,.4,1);
+    opacity: 1;
+  }
+  h3:hover{
+    transition: all .3s cubic-bezier(.6,0,.4,1);
+    opacity: 1;
+  }
+  button {
+    background: #3D72A4;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    font-family: 'Raleway', sans-serif;
+    font-size: 27px;
+    height: 40px;
+    width: 100%;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: all .3s cubic-bezier(.6,0,.4,1);
+  }
+  button span {
+    display: block;
+    line-height: 72px;
+    position: relative;
+    top: -2px;
+    transform: translate3d(0,0,0);
+  }
+  button:hover {
+    background: #007BA5;
+  }
+a
+{
+	font-size:20px;
+    color:white;
+    text-decoration: none;
+    margin-bottom:4px;
+    margin-top:-10px;
+    
+}
+a:hover
+{
+    color:darkgoldenrod;
+}
+.button-color
+{
+    background-color:#1BA098;
+    color:floralwhite
+}
+
+h2
+{
+	color:white;
+    font-size: 32px;
+    font-weight: 970;
+    opacity: .5;
+    margin-bottom: 35px;
+}
+ h2:hover{
+    transition: all .3s cubic-bezier(.6,0,.4,1);
+    opacity: 1;
+  }
