@@ -26,5 +26,19 @@ public class RatingService {
 		ratingRepo.save(newRating);
 		return null;
 	}
+	
+	public double avgRating(Long id) {
+		List <Rating> ratings = ratingRepo.findByProduct(id);
+		int sum = 0;
+		for (Rating rating : ratings) {
+			sum += rating.getRating();
+		}
+		if(ratings.size()==0) {
+			return 0;
+		}
+		double avg = sum/ratings.size();
+		return avg;
+		//return ratings.stream().mapToDouble(val -> val).average().orElse(0.0);
+	}
 
 }

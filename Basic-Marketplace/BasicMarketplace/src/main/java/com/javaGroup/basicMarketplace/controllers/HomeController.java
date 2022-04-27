@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
+import com.javaGroup.basicMarketplace.models.Cart;
 import com.javaGroup.basicMarketplace.models.LoginUser;
 import com.javaGroup.basicMarketplace.models.Product;
 import com.javaGroup.basicMarketplace.models.Rating;
 import com.javaGroup.basicMarketplace.models.User;
+import com.javaGroup.basicMarketplace.services.CartService;
 import com.javaGroup.basicMarketplace.services.ProductService;
 import com.javaGroup.basicMarketplace.services.RatingService;
 import com.javaGroup.basicMarketplace.services.UserService;
@@ -32,6 +34,9 @@ public class HomeController {
 	
 	@Autowired
 	private RatingService ratingServ;
+	
+	@Autowired
+	private CartService cartServ;
 	
 	@GetMapping("/")
 	public String index(Model model) {
@@ -59,6 +64,7 @@ public class HomeController {
         userServ.register(newUser, result);
         // Log them in.
         session.setAttribute("loggedInUser", newUser);
+        session.setAttribute("userCart", cartServ.getUserCart(newUser.getId()));
         return "redirect:/dashboard";
     }
     
@@ -79,6 +85,7 @@ public class HomeController {
         
         // Log them in.
         session.setAttribute("loggedInUser", loggedInUser);
+        session.setAttribute("userCart", cartServ.getUserCart(loggedInUser.getId()));
         return "redirect:/dashboard";
     }
 	
@@ -87,6 +94,12 @@ public class HomeController {
 			Model model) {
 		if(session.getAttribute("loggedInUser")!=null) {
 			model.addAttribute("products", productServ.allProducts());
+			// Cart userCart = (Cart) session.getAttribute("userCart");
+			// model.addAttribute("cartProducts", userCart.getProductsInCart());
+			User user = (User)session.getAttribute("loggedInUser");
+			Long userId = user.getId();
+			Cart userCart = cartServ.getUserCart(userId);
+			model.addAttribute("cartProducts", userCart.getProductsInCart());
 			return "dashboard.jsp";
 		}
 		else {
@@ -126,11 +139,21 @@ public class HomeController {
 			Model model) {
 		if(session.getAttribute("loggedInUser")!=null) {
 			model.addAttribute("products", productServ.findById(id));
+			model.addAttribute("prodRating", ratingServ.avgRating(id));
 			return "details.jsp";
 		}
 		else {
 			return "redirect:/";
 		}
+	}
+	
+	@GetMapping("/products/{id}/addToCart")
+	public String addToCart(@PathVariable Long id,
+			HttpSession session,
+			Model model) {
+		User user = (User)session.getAttribute("loggedInUser");
+		cartServ.addToCart(user.getId(), productServ.findById(id));
+		return "redirect:/dashboard";
 	}
 	
 	@GetMapping("/products/{id}/edit")

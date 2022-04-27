@@ -24,9 +24,10 @@
 <h5>Product Information:</h5>
 <p><c:out value="${products.description}"/></p>
 <h5>Product Rating:</h5>
-<p> <%-- <c:out value="${products.id.rating}"/> --%> <a href="/products/${products.id}/rating">Leave a rating</a><p>
+<p> ${prodRating} <a href="/products/${products.id}/rating">Leave a rating</a><p>
 <h5>Price</h5>
 <p><c:out value="${products.price}"/></p>
-<input type="submit" class="btn btn-primary" value="Add to Cart (not done">
+<a href="/products/${products.id}/addToCart" class="btn btn-primary">Add to Cart</a>
+
 </body>
 </html>
